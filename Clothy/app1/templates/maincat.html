@@ -1,0 +1,106 @@
+{% extends "layout.html" %}
+{% block title %}
+   Shop Page
+  {% endblock %} 
+  {% block cls_shop %}
+  active
+  {% endblock %}
+  {% block content %}
+  {% load static %}
+  <section id="page-header">
+    <h2>{{category}} Clothes</h2>
+
+    <p>
+      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis nulla
+      iusto eos perspiciatis? Ipsa, odit.
+    </p>
+  </section>
+ 
+ 
+  <section  class="section-p1 section-t1">
+  <div class="drp-dwn">
+      <a href="{% url 'shop' %}">
+        <button class="btn">All</button>
+      </a>
+    <div class="items"> 
+      <ul>
+        <li><a href="{% url 'maincat' 'Male'%}">Male</a></li>
+        <li><a href="{% url 'maincat' 'Female'%}">Female</a></li>
+        <li><a href="{% url 'maincat' 'Kids'%}">Kids</a></li>
+      </ul>
+    </div>
+  </div>
+
+
+
+   <div class="drp-dwn">
+   
+      <a href="{% url 'shop' %}">
+          <button class="btn">
+           All
+          </button>
+      </a>
+    <div class="items"> 
+    
+      <ul>
+        <li><a href="{% url 'mainsub' 'Top' category %}">Top</a></li>
+        <li><a href="{% url 'mainsub' 'Bottom' category %}">Bottom</a></li>
+      </ul>
+    </div>
+    
+   </div>
+  
+  </section>
+ 
+  <section id="product1" class="section-p1">
+    <h2>Featured Products</h2>
+    <p>Summer Collection New Mordern Design</p>
+    <div class="pro-container">
+ 
+    {% for product in products  %}
+
+
+<a href="{% url 'product' product.id %}">
+      <div class="pro">
+        <img src="{{product.image.url}}" alt="" />
+        <div class="des">
+          <h5>{{product.name}}</h5>
+          <div class="star">
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+          </div>
+          <h4>{{product.price}}</h4>
+        </div>
+        <a href="#"><i class="ri-shopping-cart-line cart"></i></a>
+      </div>
+    </a>
+      {% endfor %}
+
+      
+    </div>
+  </section>
+  <section id="pagination" class="section-p1">
+    <a href="#">1</a>
+    <a href="#">2</a>
+    <a href="#"><i class="ri-arrow-right-line"></i></a>
+  </section>
+ 
+  <section id="newsletter" class="section-p1 section-m1">
+    <div class="newstext">
+      <h4>Sign Up For Newsletters</h4>
+      <p>
+        Get E-mail updates abbout our latest shop and
+        <span>special offers.</span>
+      </p>
+    </div>
+    <div class="form">
+      <input type="text" placeholder="Your email address" />
+      <button class="normal">Sign Up</button>
+    </div>
+  </section>
+
+
+  {% endblock %}

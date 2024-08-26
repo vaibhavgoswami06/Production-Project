@@ -1,0 +1,97 @@
+{% extends "layout.html" %}
+
+{% block content %}
+{% load static %}
+<section id="page-header" class="contact">
+    <h2>#Let's Talk</h2>
+
+    <p>Please Leave a message!</p>
+  </section>
+  <section id="contact-details" class="section-p1">
+    <div class="details">
+      <span>GET IN TOUCH</span>
+      <h2>Visit one of our agency locations or contact us today</h2>
+      <h3>Head Office</h3>
+      <div>
+        <li>
+          <i class="ri-map-2-line"></i>
+          <p>56 Glassford Street Glasgow G1 1UL New York</p>
+        </li>
+        <li>
+          <i class="ri-mail-line"></i>
+          <p>contact@example.com</p>
+        </li>
+        <li>
+          <i class="ri-phone-fill"></i>
+          <p>+91 343 3434 34</p>
+        </li>
+        <li>
+          <i class="ri-time-line"></i>
+          <p>Monday to Saturday</p>
+        </li>
+      </div>
+    </div>
+    <div class="map">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3626.9914622028537!2d73.6831002741322!3d24.62397915468185!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3967e4e466a91a6b%3A0x7c07da89b29e5167!2sVidya%20Bhawan%20Polytechnic%20College!5e0!3m2!1sen!2sin!4v1723606079758!5m2!1sen!2sin"
+        width="600"
+        height="450"
+        style="border: 0"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+      ></iframe>
+    </div>
+  </section>
+  <section id="form-details">
+    <form action="">
+      <span>Leave A Message</span>
+      <h2>We Love To Hear From You!</h2>
+      <input type="text" placeholder="Your Name" />
+      <input type="text" placeholder="E-mail" />
+      <input type="text" placeholder="Subject" />
+      <textarea name="" id="" cols="30" rows="10" placeholder="Your Message">
+      </textarea>
+      <button class="normal">Submit</button>
+    </form>
+    <div class="people">
+      <div>
+        <img src="{% static 'images/people/1.png' %}" />
+        <p>
+          <span>John Doe</span> Senior Marketin Manager <br />Phone: +91 3424
+          3243 324 <br />
+          Email: concatc@example.com
+        </p>
+      </div>
+      <div>
+        <img src="{% static 'images/people/1.png' %}"  alt="" />
+        <p>
+          <span>John Doe</span> Senior Marketin Manager <br />Phone: +91 3424
+          3243 324 <br />
+          Email: concatc@example.com
+        </p>
+      </div>
+      <div>
+        <img src="{% static 'images/people/1.png' %}" alt="" />
+        <p>
+          <span>John Doe</span> Senior Marketin Manager <br />Phone: +91 3424
+          3243 324 <br />
+          Email: concatc@example.com
+        </p>
+      </div>
+    </div>
+  </section>
+  <section id="newsletter" class="section-p1 section-m1">
+    <div class="newstext">
+      <h4>Sign Up For Newsletters</h4>
+      <p>
+        Get E-mail updates abbout our latest shop and
+        <span>special offers.</span>
+      </p>
+    </div>
+    <div class="form">
+      <input type="text" placeholder="Your email address" />
+      <button class="normal">Sign Up</button>
+    </div>
+  </section>
+{% endblock %}
