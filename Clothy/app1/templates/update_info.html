@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block cls_register %}
+active
+{% endblock %}
+
+
+{% block content %}
+{% load static %}
+<section id="signup" class="section-m1" style="margin-top: 80px;">
+    
+       <form method="POST" action="{% url 'update_info' %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <br><br>
+        <button type="submit" class="btn btn-secondary">Update User Profile</button>
+        </form>
+          
+        
+</section>
+        
+{% endblock %}

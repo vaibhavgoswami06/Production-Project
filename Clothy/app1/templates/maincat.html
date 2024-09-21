@@ -72,7 +72,12 @@
             <i class="ri-star-fill"></i>
             <i class="ri-star-fill"></i>
           </div>
-          <h4>{{product.price}}</h4>
+          <h4>{% if product.is_sale %}
+            <strike>{{ product.price }}</strike>
+            {{ product.sale_price }}
+            {% else %}
+            {{ product.price }}
+            {% endif %}</h4>
         </div>
         <a href="#"><i class="ri-shopping-cart-line cart"></i></a>
       </div>

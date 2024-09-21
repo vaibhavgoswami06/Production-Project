@@ -1,47 +1,8 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{% block title %}
-        TITLE{% endblock %}</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link
-      href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="{% static 'style.css' %}?{% now "U" %}" />
-  </head>
-  <body>
+{% extends "layout.html" %}
 
-    <section id="header">
-      <a href="#"><img class="logo" src="{% static 'images/logo.png' %}" alt="" /></a>
-      <div>
-        <ul id="navbar">
-          <li><a class="{% block cls_home %}{% endblock %}" href="/index">Home</a></li>
-          <li><a class="{% block cls_shop %}{% endblock %}" href="/shop">Shop</a></li>
-          <li><a href="/signup">Signup/Login</a></li>
-          <li><a  href="about.html">About</a></li>
-          <li><a class="{% block cls_contact %}{% endblock %}" href="/contact">Contact</a></li>
-          <li>
-            <a href="/cart" id="lg-bag"
-              ><i class="ri-shopping-bag-line"></i
-            >
-          <div class="circle">
-            <span class="counter">0</span>
-          </div></a>
-          </li>
-          <a href="#" id="close"><i class="ri-close-line"></i></a>
-        </ul>
-      </div>
-      <div id="mobile">
-        <a href="cart.html"><i class="ri-shopping-bag-line"></i></a>
-        <i id="bar" class="ri-menu-fold-3-line"></i>
-      </div>
-    </section>
-    {% block content %}
-    <section id="prodetails" class="section-p1">
+{% block content %}
+{% load static %}
+<section id="prodetails" class="section-p1">
         <div class="single-pro-image">
           <img src="{{ product.image.url }}" width="100%" id="MainImg" alt="" />
           <div class="small-img-group">
@@ -82,16 +43,21 @@
         </div>
         <div class="single-pro-details">
           <h6>{{product.name}}</h6>
-          <h2>${{product.price}}</h2>
-          <select>
-            <option>Select Size</option>
-            <option>XL</option>
-            <option>XXL</option>
-            <option>Small</option>
-            <option>Large</option>
+          <h2>${% if product.is_sale %}
+            <strike>{{ product.price }}</strike>
+            {{ product.sale_price }}
+            {% else %}
+            {{ product.price }}
+            {% endif %}</h2>
+          <select id="size-cart">
+            <option value="small">Small</option>
+            <option value="large">Large</option>
+            <option value="xl">XL</option>
+            <option value="xxl">XXL</option>
+            <option value="xxxl">XXXL</option>
           </select>
-          <input type="number" value="1" />
-          <button class="normal">Add To Cart</button>
+          <input type="number" value="1" id="qty-cart" />
+          <button value="{{ product.id }}" id="add-cart" class="normal">Add To Cart</button>
           <h4>Product Details</h4>
           <span
             >{{product.subcat}} <br> {{product.description}}</span>
@@ -115,7 +81,12 @@
                 <i class="ri-star-fill"></i>
                 <i class="ri-star-fill"></i>
               </div>
-              <h4>${{product.price}}</h4>
+              <h4>${% if product.is_sale %}
+                <strike>{{ product.price }}</strike>
+                {{ product.sale_price }}
+                {% else %}
+                {{ product.price }}
+                {% endif %}</h4>
             </div>
             <a href="#"><i class="ri-shopping-cart-line cart"></i></a>
           </div>
@@ -134,82 +105,37 @@
           <button class="normal">Sign Up</button>
         </div>
       </section>
-     
+    <script>
+$(document).on('click', '#add-cart', function(e){
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '{% url 'cart_add' %}',
+            data: {
+                     product_id: $('#add-cart').val(),
+                     product_quantity: $('#qty-cart').val(),
+                     product_size: $('#size-cart option:selected').text(),
+                     csrfmiddlewaretoken: '{{ csrf_token }}',
+                     action: 'post'
+            },
+    
+            success: function(json){
+                document.getElementById("cart_quantity").textContent=json.qty
+                location.reload();
+            },
+    
+            error: function(xhr, errmsg, err){
+    
+            }
+    
+    
+        });
+    
+    
+    
+    })
+
+    </script> 
     
     {% endblock %}
 
-    <footer class="section-p1">
-
-        <div class="col">
-          <img class="logo" src="{% static 'images/logo.png' %}" alt="" />
-          <h4>Contact</h4>
-          <p>
-            <strong> Address:</strong> 562 Wellington Road, Street 32, San
-            Francisco
-          </p>
-          <p><strong>Phone:</strong> +01 2222 365 / (+91) 01 3434 534</p>
-          <p><strong>Hours:</strong> 10:00 - 18:00, Mon - Sat</p>
-          <div class="follow">
-            <h4>Follow us</h4>
-            <div class="icon">
-              <i class="ri-facebook-fill"></i>
-              <i class="ri-twitter-fill"></i>
-              <i class="ri-instagram-line"></i>
-              <i class="ri-pinterest-fill"></i>
-              <i class="ri-youtube-fill"></i>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <h4>About</h4>
-          <a href="#">About us</a>
-          <a href="#">Delivery Information</a>
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms & Conditions</a>
-          <a href="#">Contact Us</a>
-        </div>
-        <div class="col">
-          <h4>My Account</h4>
-          <a href="#">Sign In</a>
-          <a href="#">View Cart</a>
-          <a href="#">My Wishlist</a>
-          <a href="#">Track My order</a>
-          <a href="#">Help</a>
-        </div>
-        <div class="col install">
-          <h4>Install App</h4>
-          <p>From App Store or Google Play</p>
-          <div class="row">
-            <img src="{% static 'images/pay/app.jpg' %}" alt="" />
-            <img src="{% static 'images/pay/play.jpg' %}" alt="" />
-          </div>
-          <p>Secured Payment Gateways</p>
-          <img src="images/pay/pay.png" alt="" />
-        </div>
-        <div class="break"></div>
-        <div class="copyright">
-          <p>© 2023, vaibhav etc= HTML, CSS Ecommerece Template</p>
-        </div>
-      </footer>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-      <script src="{% static 'script.js' %}"></script>
-      <script>
-        var MainImg = document.getElementById("MainImg");
-        var smallimg = document.getElementsByClassName("small-img");
-        smallimg[0].onclick = function () {
-          MainImg.src = smallimg[0].src;
-        };
-        smallimg[1].onclick = function () {
-          MainImg.src = smallimg[1].src;
-        };
-        smallimg[2].onclick = function () {
-          MainImg.src = smallimg[2].src;
-        };
-        smallimg[3].onclick = function () {
-          MainImg.src = smallimg[3].src;
-        };
-      </script>
-    </body>
-  </html>
-  

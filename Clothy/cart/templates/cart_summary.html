@@ -2,6 +2,7 @@
 
 {% block content %}
 {% load static %}
+
 <section id="page-header" class="contact">
     <h2>#Let's Talk</h2>
 
@@ -11,6 +12,7 @@
     <table width="100%">
       <thead>
         <tr>
+          <td>Update</td>
           <td>Remove</td>
           <td>Image</td>
           <td>Product</td>
@@ -20,42 +22,54 @@
         </tr>
       </thead>
       <tbody>
+        {% if cart_products %}
+        {% for cart_product in cart_products  %}
+       
         <tr>
+          <td><button type="button" data-index="{{cart_product.id}}" class="normal update-cart">update</button></td>
           <td>
-            <a href="#"><i class="ri-close-circle-line"></i></a>
+            <button type="button" data-index="{{cart_product.id}}" class="delete-product" style="border: none;"><i class="ri-close-circle-line"></i></button>
           </td>
           <td>
-            <img src="images/products/f1.jpg" alt="" />
+            <img src="{{cart_product.image.url}}" alt="" />
           </td>
-          <td>Cartoon Astronaut T-Shirts</td>
-          <td>$118.19</td>
-          <td><input type="number" value="1" /></td>
-          <td>$118.19</td>
+          <td>{{cart_product.name}}</td>
+          <td id="price">{% if cart_product.is_sale %}
+            <strike>{{ cart_product.price }}</strike>
+            {{ cart_product.sale_price }}
+            {% else %}
+            {{ cart_product.price }}
+            {% endif %}</td>
+          <td>
+            {% for key, value in quantities.items %}
+              {% if key == cart_product.id|slugify %}
+            <input type="number" value="{{value}}" id="select{{cart_product.id}}">
+          </input>
+          </td>
+          <td id="item-{{cart_product.id}}"></td>
+          <script>
+            function myfunct(item){
+              let index = {{cart_product.is_sale|yesno:"true,false"}}
+              if(index){
+                 var price = {{cart_product.sale_price}}
+              }else{ 
+                var price = {{cart_product.price}}
+              }
+                console.log(price)
+             parseInt(price)
+             let qty = {{value}};
+             parseInt(qty)
+            sum = qty*price
+            console.log(sum)
+            document.getElementById("item-"+item).innerText= "₹"+sum;      
+            }
+            myfunct({{cart_product.id}});
+            </script>
+            {% endif %}
+            {% endfor %}
         </tr>
-        <tr>
-          <td>
-            <a href="#"><i class="ri-close-circle-line"></i></a>
-          </td>
-          <td>
-            <img src="images/products/f1.jpg" alt="" />
-          </td>
-          <td>Cartoon Astronaut T-Shirts</td>
-          <td>$118.19</td>
-          <td><input type="number" value="1" /></td>
-          <td>$118.19</td>
-        </tr>
-        <tr>
-          <td>
-            <a href="#"><i class="ri-close-circle-line"></i></a>
-          </td>
-          <td>
-            <img src="images/products/f1.jpg" alt="" />
-          </td>
-          <td>Cartoon Astronaut T-Shirts</td>
-          <td>$118.19</td>
-          <td><input type="number" value="1" /></td>
-          <td>$118.19</td>
-        </tr>
+       
+        {% endfor %}
       </tbody>
     </table>
   </section>
@@ -72,7 +86,7 @@
       <table>
         <tr>
           <td>Cart Subtotal</td>
-          <td>$ 335</td>
+          <td>₹ {{totals}}</td>
         </tr>
         <tr>
           <td>Shipping</td>
@@ -80,10 +94,84 @@
         </tr>
         <tr>
           <td><strong>Total</strong></td>
-          <td><strong>$ 335</strong></td>
+          <td><strong>₹ {{totals}}</strong></td>
         </tr>
       </table>
       <button class="normal">Proceed to checkout</button>
     </div>
   </section>
+  
+         {% else %}
+         <tr>        
+          <td colspan="7"> <h2>There's nothing here</h2></td>
+         </tr>
+        </tbody>
+      </table>
+    </section>
+         {% endif %}  
+      
+
+  
+<script>
+  $(document).on('click', '.update-cart', function(e){
+    e.preventDefault();
+    var productid = $(this).data('index')
+    $.ajax({
+        type: 'POST',
+        url: '{% url 'cart_update' %}',
+        data: {
+                 product_id: $(this).data('index'),
+                 product_quantity: $('#select'  + productid).val(),
+                 product_size: $('#size-cart option:selected').text(),
+                 csrfmiddlewaretoken: '{{ csrf_token }}',
+                 action: 'post'
+        },
+
+        success: function(json){
+            //console.log(json)
+            //document.getElementById("cart_quantity").textContent=json.qty
+              location.reload();
+          },
+
+        error: function(xhr, errmsg, err){
+
+        }
+
+
+    });
+
+
+
+})
+
+// delete cart item
+$(document).on('click', '.delete-product', function(e){
+  e.preventDefault();
+  //var productid = $(this).data('index')
+  $.ajax({
+      type: 'POST',
+      url: '{% url 'cart_delete' %}',
+      data: {
+               product_id: $(this).data('index'),
+               csrfmiddlewaretoken: '{{ csrf_token }}',
+               action: 'post'
+      },
+
+      success: function(json){
+          console.log(json.message)
+          //document.getElementById("cart_quantity").textContent=json.qty
+            location.reload();
+        },
+
+      error: function(xhr, errmsg, err){
+           console.log(err)
+      }
+
+
+  });
+
+
+
+})
+</script>
 {% endblock %}

@@ -5,48 +5,17 @@
 {% endblock %} {% block content %}
   {% load static %}
   <section id="page-header">
-    <h2>Super value deals</h2>
+    <h2>Search Products</h2>
 
     <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis nulla iusto eos perspiciatis? Ipsa, odit.</p>
   </section>
-  <section  class="section-p1 section-t1">
-    <div class="drp-dwn">
-      <a href="{% url 'shop' %}">
-        <button class="btn">
-         All
-        </button>
-    </a>
- 
-    <div class="items"> 
-      <ul>
-        <li><a href="{% url 'maincat' 'Male'%}">Male</a></li>
-        <li><a href="{% url 'maincat' 'Female'%}">Female</a></li>
-        <li><a href="{% url 'maincat' 'Kids'%}">Kids</a></li>
-      </ul>
+  
+     </section>
 
-    </div>
 
-   </div>
-   <div class="drp-dwn">
-    <a href="{% url 'shop' %}">
-      <button class="btn">
-       All
-      </button>
-  </a>
-    <div class="items"> 
-      <ul>
-        <li><a href="{% url 'subcat' 'Top' %}">Top</a></li>
-        <li><a href="{% url 'subcat' 'Bottom' %}">Bottom</a></li>
-      </ul>
-
-    </div>
-
-   </div>
-  </section>
+     {% comment %} product section below {% endcomment %}
   <section id="product1" class="section-p1">
-    <h2>Featured Products</h2>
-    <p>Summer Collection New Mordern Design</p>
-
+    
     <div class="pro-container">
       {% for product in products %}
         
@@ -78,11 +47,7 @@
       {% endfor %}
     </div>
   </section>
-  <section id="pagination" class="section-p1">
-    <a href="#">1</a>
-    <a href="#">2</a>
-    <a href="#"><i class="ri-arrow-right-line"></i></a>
-  </section>
+  
 
   <section id="newsletter" class="section-p1 section-m1">
     <div class="newstext">

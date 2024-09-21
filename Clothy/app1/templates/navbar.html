@@ -1,0 +1,32 @@
+{% load static %}
+<section id="header">
+    <a href="#"><img class="logo" src="{% static 'images/logo.png' %}" alt="" /></a>
+    <div>
+      <ul id="navbar">
+        <li><a class="{% block cls_home %}{% endblock %}" href="/index">Home</a></li>
+        <li><a class="{% block cls_shop %}{% endblock %}" href="/shop">Shop</a></li>
+       {% if user.is_authenticated %}
+       <li><a href="{% url 'logout' %}">Logout</a></li>
+       <li><a href="{% url 'update_user' %}">Profile</a></li>
+       {% else %}
+        <li><a class="{% block cls_register %}{% endblock %}" href="{% url 'register' %}">Signup/Login</a></li>
+        {% endif %}
+        <li><a  href="{% url 'search' %}">Search</a></li>
+        <li><a class="{% block cls_contact %}{% endblock %}" href="/contact">Contact</a></li>
+        <li>
+          <a href="{% url 'cart_summary' %}" id="lg-bag"
+            ><i class="ri-shopping-bag-line"></i
+          >
+        <div class="circle">
+          <span class="counter" id="cart_quantity">{{ cart|length }}</span>
+        </div></a>
+        </li>
+        <a href="#" id="close"><i class="ri-close-line"></i></a>
+      </ul>
+    </div>
+    <div id="mobile">
+      <a href="cart.html"><i class="ri-shopping-bag-line"></i></a>
+      <i id="bar" class="ri-menu-fold-3-line"></i>
+    </div>
+  </section>
+ 

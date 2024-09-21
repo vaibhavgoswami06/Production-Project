@@ -225,6 +225,9 @@ body {
   padding-top: 20px;
   flex-wrap: wrap;
 }
+#product1 .pro-container a{
+  text-decoration: none;
+}
 #product1 .pro {
   width: 23%;
   min-width: 250px;
@@ -776,10 +779,12 @@ footer .copyright {
 }
 #cart table td:nth-child(4),
 #cart table td:nth-child(5),
-#cart table td:nth-child(6) {
+#cart table td:nth-child(6), 
+#cart table td:nth-child(7) {
   width: 150px;
   text-align: center;
 }
+
 
 #cart table td:nth-child(5) input {
   width: 70px;
